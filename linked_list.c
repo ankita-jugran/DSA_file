@@ -192,29 +192,29 @@ void delnode(){
     printf("node is deleted\n");
     }
            
-    void del_afternode(){
-        if ( head == NULL ) {
-            printf("List is empty. you cannot delete anything\n");
-            return;
-        }
-        struct node *ptr = head, *temp;
-        int val;
-        printf("enter data of node after which you want to delete:- ");
-        scanf("%d",&val);
-        while ( ptr !=NULL && ptr->data!=val ){
-            ptr = ptr->nextptr;
-        }
-        if ( ptr == NULL) {
-            printf("node with %d data not found\n ",val);
+void del_afternode(){
+    if ( head == NULL ) {
+        printf("List is empty. you cannot delete anything\n");
         return;
         }
-        if ( ptr == tail ) {
-            printf("reached at the end of linked list , cannot delete after node\n");
-            return;
+    struct node *ptr = head, *temp;
+    int val;
+    printf("enter data of node after which you want to delete:- ");
+    scanf("%d",&val);
+    while ( ptr !=NULL && ptr->data!=val ){
+        ptr = ptr->nextptr;
         }
-        else{
-            temp = ptr->nextptr;
-            ptr->nextptr = temp->nextptr; }
+    if ( ptr == NULL) {
+        printf("node with %d data not found\n ",val);
+        return;
+        }
+    if ( ptr == tail ) {
+        printf("reached at the end of linked list , cannot delete after node\n");
+        return;
+        }
+    else{
+        temp = ptr->nextptr;
+        ptr->nextptr = temp->nextptr; }
         free(temp);
         printf("node is deleted\n");
         
@@ -272,7 +272,7 @@ void reverse() {
     if ( head == NULL) {
         printf("list is empty\n");
     }
-    struct  node *q = NULL, *r = q , *s = head , *p = s;
+    struct  node *q = NULL, *r = NULL , *p = head;
     while ( p != NULL )
     {
         r = q;
@@ -298,12 +298,38 @@ void find_mid() {
     printf("the middle element is %d \n",slow->data);
 }
 
+void cycle(){
+    int flag = 0;
+    head = create_onenode();
+    head->nextptr = create_onenode();
+    head->nextptr->nextptr = create_onenode();
+    head->nextptr->nextptr->nextptr = head->nextptr;
+
+    struct node *slow = head;
+    struct node *fast = head;
+    while ( fast!=NULL && fast->nextptr!=NULL ) {
+        slow = slow->nextptr;
+        fast = fast->nextptr->nextptr;
+        if ( fast == slow) {
+            flag = 1;
+            break;
+        }
+    }
+    if (flag == 1) {
+        printf("Cycle is found in linked list\n");
+    }
+    else {
+        printf("Cycle is not found in linked list\n");
+    }
+}
+
 
 int main()
 {
     int ch;
     while (1)
     {
+    printf("\n");
     printf("***MAIN MENU***\n");
     printf("1. Create a list\n");
     printf("2. Display the list\n");
@@ -319,7 +345,8 @@ int main()
     printf("12. sort the list\n");
     printf("13. Reverse the list\n");
     printf("14. Finding middle element in list\n");
-    printf("15. Exit\n");
+    printf("15. Finding cycle in list\n");
+    printf("16. Exit\n");
     printf("enter your choice:- ");
     scanf("%d",&ch);
     switch (ch) {
@@ -412,6 +439,10 @@ int main()
         break;
 
         case 15:
+        cycle();
+        break;
+
+        case 16:
         printf("exiting program....");
         exit (0);
 
